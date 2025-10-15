@@ -2,6 +2,12 @@
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Presistence.Data;
+using Presistence.Repositories;
+using Services;
+using Services.Abstraction.Contracts;
+using Services.Implementations;
+using Services.MappingProfiles;
+
 
 namespace E_Commerce.API
 {
@@ -23,6 +29,10 @@ namespace E_Commerce.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); 
             });
             builder.Services.AddScoped<IDataSeeding,DataSeeding>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddAutoMapper(x => x.AddProfile(new ProductProfile()));
+            builder.Services.AddAutoMapper(x => { }, typeof(AssemblyReference).Assembly);
+            builder.Services.AddScoped<IServiceManger,ServiceManger>();
 
             var app = builder.Build();
 
@@ -38,6 +48,7 @@ namespace E_Commerce.API
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
