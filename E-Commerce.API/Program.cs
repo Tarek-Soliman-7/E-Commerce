@@ -1,4 +1,4 @@
-
+﻿
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Presistence.Data;
@@ -7,6 +7,7 @@ using Services;
 using Services.Abstraction.Contracts;
 using Services.Implementations;
 using Services.MappingProfiles;
+using Shared.Enums;
 
 
 namespace E_Commerce.API
@@ -33,6 +34,14 @@ namespace E_Commerce.API
             //builder.Services.AddAutoMapper(x => x.AddProfile(new ProductProfile()));
             builder.Services.AddAutoMapper(x => { }, typeof(AssemblyReference).Assembly);
             builder.Services.AddScoped<IServiceManger,ServiceManger>();
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.UseInlineDefinitionsForEnums(); // يعمل تأثير مشابه
+                c.SchemaFilter<DisplayEnumSchemaFilter>();
+            });
+
+
 
             var app = builder.Build();
 
